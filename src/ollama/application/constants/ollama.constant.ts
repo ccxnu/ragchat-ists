@@ -1,0 +1,1 @@
+export const OLLAMA_CHAT_MODEL = 'OLLAMA_CHAT_MODEL';

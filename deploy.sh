@@ -5,8 +5,8 @@ cd "$(dirname "$0")"
 echo 'Inicio'
 
 # Variables
-NAME_CONTAINER="ragchat-ists"
-NAME_IMAGE="ragchat-ists"
+NAME_CONTAINER="api-ragchat-ists"
+NAME_IMAGE="api-ragchat-ists"
 PORT_EXPOSE=8048
 ENV_FILE="/CONFIG/VARIABLES_ENTORNO/ragchat-ists/.env"
 NETWORK="database"

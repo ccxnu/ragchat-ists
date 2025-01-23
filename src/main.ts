@@ -1,5 +1,4 @@
 import { NestFactory } from '@nestjs/core';
-import { FastifyAdapter, NestFastifyApplication } from "@nestjs/platform-fastify";
 
 import { EnvService } from '@/infra/env/env.service';
 
@@ -10,10 +9,8 @@ import { LoggingInterceptor } from './interface/common/interceptors/logger.inter
 
 async function bootstrap()
 {
-  const app = await NestFactory.create<NestFastifyApplication>(
-    AppModule,
-    new FastifyAdapter(),
-    { logger: ['error', 'warn'] }
+  const app = await NestFactory.create(AppModule,
+    { logger: ['error', 'warn', 'log'] }
   );
 
   // Env constants

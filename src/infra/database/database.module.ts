@@ -10,7 +10,8 @@ import { KyselyUserRepository } from './kysely/repositories/kysely-user.reposito
 
 @Module({
   imports: [EnvModule],
-  providers: [
+  providers:
+  [
     DatabaseProvider,
 		{
 			provide: UserRepository,
