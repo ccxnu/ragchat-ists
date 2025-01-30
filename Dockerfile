@@ -1,4 +1,4 @@
-FROM node:20-alpine3.21 AS base
+FROM node:20-alpine3.18 AS base
 
 ENV DIR=/app
 WORKDIR $DIR
@@ -17,7 +17,6 @@ RUN npm ci && \
     rm -f .npmrc
 
 COPY tsconfig*.json ./
-COPY .swcrc ./
 COPY nest-cli.json ./
 COPY src src
 COPY public public
