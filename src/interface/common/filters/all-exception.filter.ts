@@ -1,39 +1,22 @@
-import { ArgumentsHost, Catch, ExceptionFilter, HttpException } from '@nestjs/common';
-
-interface IError
-{
-  message: string;
-  errors?: any;
-  reason?: any;
-}
+import { ArgumentsHost, Catch, ExceptionFilter } from "@nestjs/common";
+import { Response } from "express";
 
 @Catch()
 export class AllExceptionFilter implements ExceptionFilter
 {
-  catch(exception: Error | HttpException, host: ArgumentsHost)
-  {
-    const response = host.switchToHttp().getResponse();
-
-    //const status = exception instanceof HttpException
-    //  ? exception.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
-
-    const message = exception instanceof HttpException
-      ? (exception.getResponse() as IError)
-      : { message: exception.message };
-
-    const errors = message.errors ?? message.reason ?? null; // Extraemos errores si existen.
-
-    const responseError =
+    catch(exception: any, host: ArgumentsHost)
     {
-      code: 'COD_ERR',
-      result: {},
-      info: {
-        message: message.message || 'UNKNOWN_ERROR',
-        errors,
-      },
-      status: false,
-    };
+        const response = host.switchToHttp().getResponse<Response>();
 
-    response.status(200).send(responseError);
-  }
+        const errorResponse = {
+            code: "COD_ERROR_SERVICE",
+            result: {},
+            info: "Ocurrió un error, intenta más tarde.",
+            status: false,
+        };
+
+        console.log(errorResponse.code, exception);
+
+        response.status(500).json(errorResponse);
+    }
 }

@@ -1,46 +1,40 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable } from "@nestjs/common";
 
-import { HashGenerator } from '@/application/cryptography/hash-generator';
-import { UserRepository } from '@/application/repositories/user.repository';
-import { Either, left, right } from '@/core/either';
-import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error';
+import { HashGenerator } from "@/application/cryptography/hash-generator";
+import { UserRepository } from "@/application/repositories/user.repository";
+import { Either, left, right } from "@/core/either";
+import { ResourceNotFoundError } from "@/core/errors/resource-not-found-error";
 
 interface ChangeUserPasswordUseCaseRequest
 {
-	userId: string
-	password: string
+    userId: string;
+    password: string;
 }
 
-type ChangeUserPasswordUseCaseResponse = Either<
-	ResourceNotFoundError,
-	object
->
+type ChangeUserPasswordUseCaseResponse = Either<ResourceNotFoundError, object>;
 
 @Injectable()
 export class ChangeUserPasswordUseCase
 {
-	constructor(
-		private userRepository: UserRepository,
-		private hashGenerator: HashGenerator,
-	)
-  {}
+    constructor(
+        private userRepository: UserRepository,
+        private hashGenerator: HashGenerator,
+    )
+    {}
 
-	async execute(
-    { userId, password }: ChangeUserPasswordUseCaseRequest
-  ):
-    Promise<ChangeUserPasswordUseCaseResponse>
-  {
-		const user = await this.userRepository.findById(userId);
-
-		if (!user)
+    async execute({ userId, password }: ChangeUserPasswordUseCaseRequest): Promise<ChangeUserPasswordUseCaseResponse>
     {
-			return left(new ResourceNotFoundError());
-		}
+        const user = await this.userRepository.findById(userId);
 
-		user.password = await this.hashGenerator.hash(password);
+        if (!user)
+        {
+            return left(new ResourceNotFoundError());
+        }
 
-		await this.userRepository.editPassword(user)
+        user.password = await this.hashGenerator.hash(password);
 
-		return right({})
-	}
+        await this.userRepository.editPassword(user);
+
+        return right({});
+    }
 }

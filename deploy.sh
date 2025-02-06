@@ -17,7 +17,7 @@ echo 'Compilado correctamente'
 
 docker rm -f "$NAME_CONTAINER"
 
-docker run -d \
+docker run \
   --restart=always \
   --name "$NAME_CONTAINER" \
   --env-file "$ENV_FILE" \

@@ -1,63 +1,60 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable } from "@nestjs/common";
 
-import { InvalidCredentialsError } from '@/application/errors/invalid-credentials-error';
-import { EmailVerificationRepository } from '@/application/repositories/email-verification.repository';
-import { UserRepository } from '@/application/repositories/user.repository';
-import { Either, left, right } from '@/core/either';
-import { DateFormat } from '@/core/entities/date';
-import { EmailStatus } from '@/domain/enums/user-email-status';
+import { InvalidCredentialsError } from "@/application/errors/invalid-credentials-error";
+import { EmailVerificationRepository } from "@/application/repositories/email-verification.repository";
+import { UserRepository } from "@/application/repositories/user.repository";
+import { Either, left, right } from "@/core/either";
+import { DateFormat } from "@/core/entities/date";
+import { EmailStatus } from "@/domain/enums/user-email-status";
 
 interface VerifyEmailUseCaseRequest
 {
-  email: string;
-	emailToken: string;
+    email: string;
+    emailToken: string;
 }
 
-type VerifyEmailUseCaseResponse = Either<
-	InvalidCredentialsError,
-  object
->
+type VerifyEmailUseCaseResponse = Either<InvalidCredentialsError, object>;
 
 @Injectable()
 export class VerifyEmailUseCase
 {
-	constructor(
-    private readonly userRepository: UserRepository,
-    private readonly emailVerificationRepository: EmailVerificationRepository
-  )
-  {}
+    constructor(
+        private readonly userRepository: UserRepository,
+        private readonly emailVerificationRepository: EmailVerificationRepository,
+    )
+    {}
 
-	async execute({ email, emailToken }: VerifyEmailUseCaseRequest): Promise<VerifyEmailUseCaseResponse>
-  {
-		const user = await this.userRepository.findByEmail(email);
-
-		if (!user)
+    async execute({ email, emailToken }: VerifyEmailUseCaseRequest): Promise<VerifyEmailUseCaseResponse>
     {
-			return left(new InvalidCredentialsError('El correo eléctronico no es válido'));
-		}
+        const user = await this.userRepository.findByEmail(email);
 
-		if (user.emailStatus === EmailStatus.VERTIFIED)
-    {
-			return left(new InvalidCredentialsError('El usuario ya está verificado'));
-		}
+        if (!user)
+        {
+            return left(new InvalidCredentialsError("El correo eléctronico no es válido"));
+        }
 
-		const emailVerification = await this.emailVerificationRepository.findOne(emailToken, user.id.toString());
+        if (user.emailStatus === EmailStatus.VERTIFIED)
+        {
+            return left(new InvalidCredentialsError("El usuario ya está verificado"));
+        }
 
-    if (!emailVerification)
-    {
-			return left(new InvalidCredentialsError('El código no es válido'));
-		}
+        const emailVerification = await this.emailVerificationRepository.findOne(emailToken, user.id.toString());
 
-    const date = new DateFormat(emailVerification.dateCreated);
+        if (!emailVerification)
+        {
+            return left(new InvalidCredentialsError("El código no es válido"));
+        }
 
-    if (emailVerification && !date.limitTime())
-    {
-      await this.emailVerificationRepository.delete(emailVerification);
-			return left(new InvalidCredentialsError('El código ya expiro'));
-		}
+        const date = new DateFormat(emailVerification.dateCreated);
 
-		await this.emailVerificationRepository.edit(emailVerification, user);
+        if (emailVerification && !date.limitTime())
+        {
+            await this.emailVerificationRepository.delete(emailVerification);
+            return left(new InvalidCredentialsError("El código ya expiro"));
+        }
 
-		return right({});
-	}
+        await this.emailVerificationRepository.edit(emailVerification, user);
+
+        return right({});
+    }
 }

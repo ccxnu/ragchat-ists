@@ -18,6 +18,9 @@
       "@/core/*": [
         "src/core/*"
       ],
+      "@/rag/*": [
+        "src/rag/*"
+      ],
       "@/application/*": [
         "src/domain/application/*"
       ],
@@ -38,7 +41,6 @@
       ]
     },
     "types": [
-      "vitest/globals",
       "node"
     ],
     "plugins": [

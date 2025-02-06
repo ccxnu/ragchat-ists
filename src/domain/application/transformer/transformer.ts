@@ -1,4 +1,4 @@
 export abstract class TransformerRepository
 {
-	abstract generateCertificate(certificate: any): Promise<Buffer>
+    abstract generateCertificate(certificate: any): Promise<Buffer>;
 }

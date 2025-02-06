@@ -1,25 +1,11 @@
-import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { Module } from "@nestjs/common";
 
-import { AuthModule } from '@/infra/auth/auth.module';
-import { envSchema } from '@/infra/env/env';
-import { HttpModule } from '@/interface/http/http.module';
-import { RagModule } from '@/src/rag-chat/rag.module';
+import { AuthModule } from "@/infra/auth/auth.module";
+import { HttpModule } from "@/interface/http/http.module";
+import { RagModule } from "@/rag/rag.module";
 
-@Module (
-  {
-    imports:
-    [
-      ConfigModule.forRoot({
-        validate: (env) => envSchema.parse(env),
-        isGlobal: true,
-        cache: true,
-      }),
-      AuthModule,
-      HttpModule,
-      RagModule,
-    ]
-  }
-)
+@Module({
+    imports: [AuthModule, HttpModule, RagModule],
+})
 export class AppModule
 {}

@@ -1,7 +1,6 @@
-import { z } from 'zod'
+import { z } from "zod";
 
-export const envSchema = z.object(
-  {
+export const envSchema = z.object({
     // Global
     GLOBAL_PREFIX: z.string(),
     NODE_ENV: z.string(),
@@ -31,10 +30,11 @@ export const envSchema = z.object(
     OLLAMA_MODEL_CHAT: z.string(),
     OLLAMA_URL: z.string(),
     OLLAMA_EMBEDDING_MODEL: z.string(),
-    DEEPSEEK_URL: z.string(),
-    DEEPSEEK_API: z.string(),
-    DEEPSEEK_MODEL: z.string(),
-  }
-)
 
-export type Env = z.infer<typeof envSchema>
+    OPENAI_URL: z.string(),
+    OPENAI_APIKEY: z.string(),
+    OPENAI_MODEL: z.string(),
+    OPENAI_MODEL_EMBED: z.string(),
+});
+
+export type Env = z.infer<typeof envSchema>;

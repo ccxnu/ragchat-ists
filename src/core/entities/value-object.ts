@@ -1,24 +1,24 @@
 export abstract class ValueObject<Props>
 {
-	protected props: Props;
+    protected props: Props;
 
-	protected constructor(props: Props)
-  {
-		this.props = props;
-	}
-
-	public equals(vo: ValueObject<unknown>)
-  {
-		if (vo === null || vo === undefined)
+    protected constructor(props: Props)
     {
-			return false;
-		}
+        this.props = props;
+    }
 
-		if (vo.props === undefined)
+    public equals(vo: ValueObject<unknown>)
     {
-			return false;
-		}
+        if (vo === null || vo === undefined)
+        {
+            return false;
+        }
 
-		return JSON.stringify(vo.props) === JSON.stringify(this.props);
-	}
+        if (vo.props === undefined)
+        {
+            return false;
+        }
+
+        return JSON.stringify(vo.props) === JSON.stringify(this.props);
+    }
 }

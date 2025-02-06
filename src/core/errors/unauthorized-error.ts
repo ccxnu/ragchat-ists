@@ -1,9 +1,9 @@
-import { UseCaseError } from '@/core/errors/use-case-error';
+import { UseCaseError } from "@/core/errors/use-case-error";
 
 export class UnauthorizedError extends Error implements UseCaseError
 {
-	constructor(message?: string)
-  {
-		super(message ? message : 'Acceso no permitido');
-	}
+    constructor(message?: string)
+    {
+        super(message ? message : "Acceso no permitido");
+    }
 }

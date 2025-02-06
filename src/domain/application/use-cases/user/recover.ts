@@ -1,38 +1,33 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable } from "@nestjs/common";
 
-import { UserRepository } from '@/application/repositories/user.repository';
-import { Either, left, right } from '@/core/either';
-import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error';
-
+import { UserRepository } from "@/application/repositories/user.repository";
+import { Either, left, right } from "@/core/either";
+import { ResourceNotFoundError } from "@/core/errors/resource-not-found-error";
 
 interface RecoverUserUseCaseRequest
 {
-	userId: string
+    userId: string;
 }
 
-type RecoverUserUseCaseResponse = Either<
-	ResourceNotFoundError,
-	object
->
+type RecoverUserUseCaseResponse = Either<ResourceNotFoundError, object>;
 
 @Injectable()
 export class RecoverUserUseCase
 {
-	constructor(private userRepository: UserRepository)
-  {}
+    constructor(private userRepository: UserRepository)
+    {}
 
-	async execute({ userId }: RecoverUserUseCaseRequest):
-    Promise<RecoverUserUseCaseResponse>
-  {
-		const user = await this.userRepository.findByIdOnDeleted(userId);
-
-		if (!user)
+    async execute({ userId }: RecoverUserUseCaseRequest): Promise<RecoverUserUseCaseResponse>
     {
-			return left(new ResourceNotFoundError());
-		}
+        const user = await this.userRepository.findByIdOnDeleted(userId);
 
-		await this.userRepository.recover(user);
+        if (!user)
+        {
+            return left(new ResourceNotFoundError());
+        }
 
-		return right({})
-	}
+        await this.userRepository.recover(user);
+
+        return right({});
+    }
 }

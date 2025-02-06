@@ -1,0 +1,10 @@
+{
+    "singleQuote": false,
+    "printWidth": 120,
+    "semi": true,
+    "tabWidth": 4,
+    "trailingComma": "all",
+    "useTabs": false,
+    "braceStyle": "allman",
+    "plugins": ["prettier-plugin-brace-style"]
+}

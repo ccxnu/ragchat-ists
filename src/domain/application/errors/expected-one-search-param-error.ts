@@ -1,4 +1,4 @@
-import { UseCaseError } from '@/core/errors/use-case-error';
+import { UseCaseError } from "@/core/errors/use-case-error";
 
 /**
  * @example
@@ -8,10 +8,8 @@ import { UseCaseError } from '@/core/errors/use-case-error';
  */
 export class MinQuerySearchNotProviedError extends Error implements UseCaseError
 {
-	constructor(queries: string)
-  {
-		super(
-			`Debes proveer al menos un parámetro con al menos dos caracteres: ${queries}`,
-		)
-	}
+    constructor(queries: string)
+    {
+        super(`Debes proveer al menos un parámetro con al menos dos caracteres: ${queries}`);
+    }
 }
